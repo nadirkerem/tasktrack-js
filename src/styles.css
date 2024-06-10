@@ -1,0 +1,113 @@
+/* GLOBAL STYLES */
+
+:root {
+  --primary-color: #f4f4f4;
+  --secondary-color: #333;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --blue: #3498db;
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --sea-salt-gradient: linear-gradient(to right, #2b5876, #4e4376);
+}
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  background: var(--sea-salt-gradient);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+input {
+  border: none;
+}
+
+/* NAVBAR */
+.navbar {
+  margin: 2rem 0;
+}
+
+.navbar-logo {
+  font-size: 4rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+/* CATEGORY */
+
+.category {
+  font-size: 2rem;
+  color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.category select {
+  padding: 0 1rem;
+}
+
+/* ADD NEW TASK */
+
+.add-new-task {
+  font-size: 2rem;
+  color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2rem 0;
+}
+
+.add-new-task-container {
+  width: 30rem;
+}
+
+.add-new-task p {
+  text-align: center;
+}
+
+.add-new-task-name {
+  width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.add-new-task-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-new-task-details input,
+.add-new-task-details select,
+.add-new-task-details button {
+  padding: 1rem;
+}
+
+.add-new-task-details button {
+  color: var(--primary-color);
+  background-color: var(--green);
+  border: none;
+  cursor: pointer;
+  width: 5rem;
+}
