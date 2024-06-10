@@ -49,6 +49,10 @@ input {
   /* display: none !important; */
 }
 
+.done {
+  text-decoration: line-through;
+}
+
 /* NAVBAR */
 .navbar {
   margin: 2rem 0;

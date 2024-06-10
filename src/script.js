@@ -18,6 +18,8 @@ newTaskForm.addEventListener('submit', (event) => {
   addNewTask();
 });
 
+getTasks();
+
 const exampleTasks = [
   {
     name: 'Task Name 1',
@@ -45,16 +47,16 @@ const exampleTasks = [
   },
 ];
 
-const tasks = localStorage.getItem('tasks') || exampleTasks;
-
-// ADD NEW TASK (ALSO ADD TO LOCAL STORAGE)
-// MARK TASK AS DONE
-// DELETE TASK (ALSO DELETE FROM LOCAL STORAGE)
-// CLEAR ALL TASKS (ALSO CLEAR LOCAL STORAGE)
-// FILTER TASKS BY STATUS
-// FILTER TASKS BY CATEGORY
+const tasks = JSON.parse(localStorage.getItem('tasks')) || exampleTasks;
 
 function addNewTask() {
+  let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  if (existingTasks.find((task) => task.name === newTaskName.value)) {
+    alert('Task already exists');
+    return;
+  }
+
   if (newTaskName.value === '' || newTaskDueDate.value === '') {
     alert('Please fill in all fields');
     return;
@@ -81,13 +83,13 @@ function addNewTask() {
 
   console.log(task);
 
-  let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
   existingTasks = [...existingTasks, task];
 
   localStorage.setItem('tasks', JSON.stringify(existingTasks));
 
   newTaskForm.reset();
+
+  getTasks();
 }
 
 function getTasks() {
@@ -119,6 +121,7 @@ function getTasks() {
     taskDeleteButton.classList.add('task-delete-button');
 
     taskName.textContent = task.name;
+    task.status === 'done' && taskName.classList.add('done');
     taskDueDate.textContent = task.dueDate;
     taskCompleteButton.innerHTML = `<i class="fa-solid fa-${
       task.status === 'done' ? 'x' : 'check'
@@ -135,6 +138,36 @@ function getTasks() {
 
   taskList.innerHTML = '';
   taskList.appendChild(fragment);
+
+  const taskCompleteButtons = document.querySelectorAll(
+    '.task-complete-button'
+  );
+
+  const taskDeleteButtons = document.querySelectorAll('.task-delete-button');
+
+  taskCompleteButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      completeTask(event);
+    });
+  });
+
+  taskDeleteButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      deleteTask(event);
+    });
+  });
 }
 
-document.addEventListener('DOMContentLoaded', getTasks);
+function deleteTask(event) {
+  let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  const taskName = event.target
+    .closest('.task-container')
+    .querySelector('.task-name').textContent;
+
+  const newTasks = existingTasks.filter((task) => task.name !== taskName);
+
+  localStorage.setItem('tasks', JSON.stringify(newTasks));
+
+  getTasks();
+}
