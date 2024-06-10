@@ -24,20 +24,32 @@ currentStatus.addEventListener('change', getTasks);
 const exampleTasks = [
   {
     name: 'Task Name 1',
-    dueDate: new Date().toISOString().split('T')[0],
+    dueDate: new Date()
+      .toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+      })
+      .split('T')[0],
     category: 'work',
     status: 'pending',
   },
   {
     name: 'Task Name 2',
-    dueDate: new Date().toISOString().split('T')[0],
+    dueDate: new Date()
+      .toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+      })
+      .split('T')[0],
     category: 'personal',
     status: 'pending',
   },
   {
     name: 'Task Name 3',
-    dueDate: new Date().toISOString().split('T')[0],
-    category: 'shopping',
+    dueDate: new Date()
+      .toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+      })
+      .split('T')[0],
+    category: 'others',
     status: 'pending',
   },
 ];
@@ -107,8 +119,9 @@ function getTasks() {
 
   const fragment = new DocumentFragment();
 
-  filteredTasks.forEach((task) => {
+  filteredTasks.forEach((task, index) => {
     const taskContainer = document.createElement('div');
+    taskContainer.setAttribute('data-id', index);
     const taskName = document.createElement('p');
     const taskDueDate = document.createElement('p');
     const taskCategory = document.createElement('p');
@@ -182,17 +195,17 @@ function completeTask(event) {
 function deleteTask(event) {
   let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-  const taskName = event.target
-    .closest('.task-container')
-    .querySelector('.task-name').textContent;
+  const taskName =
+    event.target.parentNode.parentNode.querySelector('.task-name').textContent;
 
-  const newTasks = existingTasks.filter((task) =>
-    task.name.length > 30
-      ? task.name.slice(0, 30) + '...' !== taskName
-      : task.name !== taskName
+  // Ask for confirmation before deleting the task
+  const userConfirmed = window.confirm(
+    `Are you sure you want to delete the task: "${taskName}"?`
   );
 
-  localStorage.setItem('tasks', JSON.stringify(newTasks));
-
-  getTasks();
+  if (userConfirmed) {
+    const newTasks = existingTasks.filter((task) => task.name !== taskName);
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
+    getTasks();
+  }
 }

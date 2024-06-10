@@ -53,10 +53,11 @@
     <div class="add-new-task-container">
       <p>Add New Task</p>
       <form action="" class="add-new-task-form">
-        <input class="add-new-task-name" type="text" name="task-name" placeholder="Task Name" required>
+        <input class="add-new-task-name" type="text" name="task-name" placeholder="Task Name" required minlength="5"
+          maxlength="50">
         <div class="add-new-task-details">
-          <input type="date" name="task-due-date">
-          <select name="task-category" id="category">
+          <input type="date" name="task-due-date" required>
+          <select name="task-category" id="category" required>
             <option value="">Category</option>
             <option value="work">Work</option>
             <option value="personal">Personal</option>
