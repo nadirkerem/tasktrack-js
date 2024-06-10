@@ -171,3 +171,19 @@ function deleteTask(event) {
 
   getTasks();
 }
+
+function completeTask(event) {
+  let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  const taskName = event.target
+    .closest('.task-container')
+    .querySelector('.task-name').textContent;
+
+  const task = existingTasks.find((task) => task.name === taskName);
+
+  task.status = task.status === 'done' ? 'pending' : 'done';
+
+  localStorage.setItem('tasks', JSON.stringify(existingTasks));
+
+  getTasks();
+}

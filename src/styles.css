@@ -167,6 +167,7 @@ input {
 }
 .task-complete-button {
   padding: 1rem;
+  width: 4rem;
   cursor: pointer;
   border: none;
   background-color: var(--green);
@@ -174,6 +175,7 @@ input {
 }
 .task-delete-button {
   padding: 1rem;
+  width: 4rem;
   cursor: pointer;
   border: none;
   background-color: var(--red);
