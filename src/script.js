@@ -24,31 +24,19 @@ currentStatus.addEventListener('change', getTasks);
 const exampleTasks = [
   {
     name: 'Task Name 1',
-    dueDate: new Date()
-      .toLocaleDateString('en-US', {
-        timeZone: 'UTC',
-      })
-      .split('T')[0],
+    dueDate: new Date().toLocaleDateString('en-US', { timeZone: 'UTC' }),
     category: 'work',
     status: 'pending',
   },
   {
     name: 'Task Name 2',
-    dueDate: new Date()
-      .toLocaleDateString('en-US', {
-        timeZone: 'UTC',
-      })
-      .split('T')[0],
+    dueDate: new Date().toLocaleDateString('en-US', { timeZone: 'UTC' }),
     category: 'personal',
     status: 'pending',
   },
   {
     name: 'Task Name 3',
-    dueDate: new Date()
-      .toLocaleDateString('en-US', {
-        timeZone: 'UTC',
-      })
-      .split('T')[0],
+    dueDate: new Date().toLocaleDateString('en-US', { timeZone: 'UTC' }),
     category: 'others',
     status: 'pending',
   },
@@ -102,8 +90,9 @@ function addNewTask() {
 function getTasks() {
   const existingTasks = JSON.parse(localStorage.getItem('tasks'));
 
-  if (existingTasks.length === 0) {
+  if (existingTasks === null || existingTasks.length === 0) {
     localStorage.setItem('tasks', JSON.stringify(exampleTasks));
+    getTasks();
   }
 
   const filteredTasks = existingTasks
