@@ -18,36 +18,31 @@ newTaskForm.addEventListener('submit', (event) => {
   addNewTask();
 });
 
-getTasks();
+currentCategory.addEventListener('change', getTasks);
+currentStatus.addEventListener('change', getTasks);
 
 const exampleTasks = [
   {
     name: 'Task Name 1',
-    dueDate: '06/11/2024',
+    dueDate: new Date().toISOString().split('T')[0],
     category: 'work',
-    status: 'done',
+    status: 'pending',
   },
   {
     name: 'Task Name 2',
-    dueDate: '06/12/2024',
+    dueDate: new Date().toISOString().split('T')[0],
     category: 'personal',
     status: 'pending',
   },
   {
     name: 'Task Name 3',
-    dueDate: '06/13/2024',
+    dueDate: new Date().toISOString().split('T')[0],
     category: 'shopping',
     status: 'pending',
   },
-  {
-    name: 'Task Name 4',
-    dueDate: '06/14/2024',
-    category: 'others',
-    status: 'done',
-  },
 ];
 
-const tasks = JSON.parse(localStorage.getItem('tasks')) || exampleTasks;
+getTasks();
 
 function addNewTask() {
   let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -93,16 +88,21 @@ function addNewTask() {
 }
 
 function getTasks() {
-  const existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const existingTasks = JSON.parse(localStorage.getItem('tasks'));
+
+  if (existingTasks.length === 0) {
+    localStorage.setItem('tasks', JSON.stringify(exampleTasks));
+  }
 
   const filteredTasks = existingTasks
-    .filter((task) =>
-      task.category === currentCategory.value
-        ? currentCategory.value
-        : task.category
+    .filter(
+      (task) =>
+        currentCategory.value === 'all' ||
+        task.category === currentCategory.value
     )
-    .filter((task) =>
-      task.status === currentStatus.value ? currentStatus.value : task.status
+    .filter(
+      (task) =>
+        currentStatus.value === 'all' || task.status === currentStatus.value
     );
 
   const fragment = new DocumentFragment();
@@ -111,18 +111,22 @@ function getTasks() {
     const taskContainer = document.createElement('div');
     const taskName = document.createElement('p');
     const taskDueDate = document.createElement('p');
+    const taskCategory = document.createElement('p');
     const taskCompleteButton = document.createElement('button');
     const taskDeleteButton = document.createElement('button');
 
     taskContainer.classList.add('task-container');
     taskName.classList.add('task-name');
     taskDueDate.classList.add('task-due-date');
+    taskCategory.classList.add('task-category');
     taskCompleteButton.classList.add('task-complete-button');
     taskDeleteButton.classList.add('task-delete-button');
 
-    taskName.textContent = task.name;
+    taskName.textContent =
+      task.name.length > 30 ? task.name.slice(0, 30) + '...' : task.name;
     task.status === 'done' && taskName.classList.add('done');
     taskDueDate.textContent = task.dueDate;
+    taskCategory.textContent = task.category.toUpperCase();
     taskCompleteButton.innerHTML = `<i class="fa-solid fa-${
       task.status === 'done' ? 'x' : 'check'
     }"></i>`;
@@ -130,6 +134,7 @@ function getTasks() {
 
     taskContainer.appendChild(taskName);
     taskContainer.appendChild(taskDueDate);
+    taskContainer.appendChild(taskCategory);
     taskContainer.appendChild(taskCompleteButton);
     taskContainer.appendChild(taskDeleteButton);
 
@@ -158,20 +163,6 @@ function getTasks() {
   });
 }
 
-function deleteTask(event) {
-  let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-  const taskName = event.target
-    .closest('.task-container')
-    .querySelector('.task-name').textContent;
-
-  const newTasks = existingTasks.filter((task) => task.name !== taskName);
-
-  localStorage.setItem('tasks', JSON.stringify(newTasks));
-
-  getTasks();
-}
-
 function completeTask(event) {
   let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
@@ -184,6 +175,24 @@ function completeTask(event) {
   task.status = task.status === 'done' ? 'pending' : 'done';
 
   localStorage.setItem('tasks', JSON.stringify(existingTasks));
+
+  getTasks();
+}
+
+function deleteTask(event) {
+  let existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  const taskName = event.target
+    .closest('.task-container')
+    .querySelector('.task-name').textContent;
+
+  const newTasks = existingTasks.filter((task) =>
+    task.name.length > 30
+      ? task.name.slice(0, 30) + '...' !== taskName
+      : task.name !== taskName
+  );
+
+  localStorage.setItem('tasks', JSON.stringify(newTasks));
 
   getTasks();
 }

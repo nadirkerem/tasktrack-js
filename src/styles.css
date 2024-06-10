@@ -46,7 +46,7 @@ input {
 }
 
 .hidden {
-  /* display: none !important; */
+  display: none !important;
 }
 
 .done {
@@ -156,13 +156,15 @@ input {
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  width: 50rem;
+  width: 70rem;
 }
 
-.task-name {
-}
 .task-due-date {
   margin-left: auto;
+  font-size: 1.6rem;
+}
+
+.task-category {
   font-size: 1.6rem;
 }
 .task-complete-button {
