@@ -18,7 +18,7 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="src/styles.css">
   <!-- Script -->
-  <script defer src="src/styles.css"></script>
+  <script defer src="src/script.js"></script>
 </head>
 
 <body>
@@ -30,7 +30,7 @@
   </nav>
 
   <section class="category">
-    <p>Category:</p>
+    <p>Filter Category:</p>
     <select name="category" id="category">
       <option value="all">All</option>
       <option value="work">Work</option>
@@ -38,12 +38,18 @@
       <option value="shopping">Shopping</option>
       <option value="others">Others</option>
     </select>
+    <p>Filter Status:</p>
+    <select name="status" id="status">
+      <option value="all">All</option>
+      <option value="done">Done</option>
+      <option value="pending">Pending</option>
+    </select>
     <!-- toggle -->
     <p>New Task:</p>
     <button class="new-task-toggle-button" id="new-task-toggle-button"><i class="fa-solid fa-plus"></i></button>
   </section>
 
-  <section class="add-new-task">
+  <section class="add-new-task hidden">
     <div class="add-new-task-container">
       <p>Add New Task</p>
       <form action="">

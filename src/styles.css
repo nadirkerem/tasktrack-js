@@ -1,5 +1,4 @@
 /* GLOBAL STYLES */
-
 :root {
   --primary-color: #f4f4f4;
   --secondary-color: #2c3e50;
@@ -45,6 +44,10 @@ input {
   border: none;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* NAVBAR */
 .navbar {
   margin: 2rem 0;
@@ -58,7 +61,8 @@ input {
 
 /* CATEGORY */
 
-.category {
+.category,
+.status {
   font-size: 2rem;
   color: var(--primary-color);
   display: flex;
@@ -67,7 +71,8 @@ input {
   margin: 2rem 0;
 }
 
-.category select {
+.category select,
+.status select {
   padding: 0 1rem;
 }
 
