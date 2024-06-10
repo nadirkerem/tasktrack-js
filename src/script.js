@@ -1,6 +1,9 @@
 const newTaskToggleButton = document.getElementById('new-task-toggle-button');
 const newTaskSection = document.querySelector('.add-new-task');
 const newTaskForm = document.querySelector('.add-new-task-form');
+const currentCategory = document.querySelector('#filter-category');
+const currentStatus = document.querySelector('#filter-status');
+const taskList = document.querySelector('.task-list');
 
 const newTaskName = newTaskForm.elements['task-name'];
 const newTaskDueDate = newTaskForm.elements['task-due-date'];
@@ -69,7 +72,9 @@ function addNewTask() {
 
   const task = {
     name: newTaskName.value,
-    dueDate: newTaskDueDate.value,
+    dueDate: new Date(newTaskDueDate.value).toLocaleDateString('en-US', {
+      timeZone: 'UTC',
+    }),
     category: newTaskCategory.value,
     status: 'pending',
   };
@@ -84,3 +89,52 @@ function addNewTask() {
 
   newTaskForm.reset();
 }
+
+function getTasks() {
+  const existingTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+  const filteredTasks = existingTasks
+    .filter((task) =>
+      task.category === currentCategory.value
+        ? currentCategory.value
+        : task.category
+    )
+    .filter((task) =>
+      task.status === currentStatus.value ? currentStatus.value : task.status
+    );
+
+  const fragment = new DocumentFragment();
+
+  filteredTasks.forEach((task) => {
+    const taskContainer = document.createElement('div');
+    const taskName = document.createElement('p');
+    const taskDueDate = document.createElement('p');
+    const taskCompleteButton = document.createElement('button');
+    const taskDeleteButton = document.createElement('button');
+
+    taskContainer.classList.add('task-container');
+    taskName.classList.add('task-name');
+    taskDueDate.classList.add('task-due-date');
+    taskCompleteButton.classList.add('task-complete-button');
+    taskDeleteButton.classList.add('task-delete-button');
+
+    taskName.textContent = task.name;
+    taskDueDate.textContent = task.dueDate;
+    taskCompleteButton.innerHTML = `<i class="fa-solid fa-${
+      task.status === 'done' ? 'x' : 'check'
+    }"></i>`;
+    taskDeleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+    taskContainer.appendChild(taskName);
+    taskContainer.appendChild(taskDueDate);
+    taskContainer.appendChild(taskCompleteButton);
+    taskContainer.appendChild(taskDeleteButton);
+
+    fragment.appendChild(taskContainer);
+  });
+
+  taskList.innerHTML = '';
+  taskList.appendChild(fragment);
+}
+
+document.addEventListener('DOMContentLoaded', getTasks);
