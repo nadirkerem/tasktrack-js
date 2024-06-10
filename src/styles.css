@@ -29,6 +29,7 @@ body {
   font-size: 1.6rem;
   line-height: 1.5;
   background: var(--sea-salt-gradient);
+  cursor: default;
 }
 
 a {
@@ -45,7 +46,7 @@ input {
 }
 
 .hidden {
-  display: none !important;
+  /* display: none !important; */
 }
 
 /* NAVBAR */
