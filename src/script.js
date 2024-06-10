@@ -90,9 +90,15 @@ function addNewTask() {
 function getTasks() {
   const existingTasks = JSON.parse(localStorage.getItem('tasks'));
 
-  if (existingTasks === null || existingTasks.length === 0) {
+  if (existingTasks === null) {
     localStorage.setItem('tasks', JSON.stringify(exampleTasks));
     getTasks();
+  }
+
+  if (existingTasks.length === 0) {
+    taskList.innerHTML =
+      '<p>Congratulations! You have no pending tasks. Enjoy your day!</p><p>Add a new task to get started.</p>';
+    return;
   }
 
   const filteredTasks = existingTasks
